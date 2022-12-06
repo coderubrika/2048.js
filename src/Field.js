@@ -29,7 +29,7 @@ export class Field {
           this.field[i][j] = newElem
           newElem.posX = j
           newElem.posY = i
-          newElem.sync()
+          newElem.sync(this.resolution)
           return newElem
         }
       }
@@ -160,7 +160,7 @@ export class Field {
     elem.posX = x
     elem.posY = y
     this.field[elem.posY][elem.posX] = elem
-    elem.sync()
+    elem.sync(this.resolution)
   }
 
   boost(elem, otherElem) {
@@ -170,7 +170,7 @@ export class Field {
     elem.posY = otherElem.posY
     elem.boostValue()
     elem.isMark = true
-    elem.sync()
+    elem.sync(this.resolution)
     this.scope += elem.value * 2
 
     this.addToEmpty(otherElem)
