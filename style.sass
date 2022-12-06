@@ -1,0 +1,48 @@
+$bg-color: #e7e7e7
+$border-color: #c7c6c6
+$body-color: #fff0be
+$border-size: 0.5%
+
+*
+  margin: 0
+  padding: 0
+  box-sizing: border-box
+
+body
+  display: flex
+  justify-content: center
+  align-items: center
+  background-color: $body-color
+  width: 100vw
+  height: 100vh
+  position: relative
+  .scope
+    position: absolute
+    right: 20%
+    top: 20%
+    font-size: 40px
+    color: #bf6565
+
+  .field
+    width: 50vw
+    height: 50vw
+    background-color: $bg-color
+    border: 3px solid $border-color
+    border-radius: 5px
+    overflow: hidden
+    position: relative
+
+    .line-vertical
+      position: absolute
+      height: 100%
+      width: $border-size
+      background-color: $border-color
+
+    .line-horizontal
+      position: absolute
+      width: 100%
+      height: $border-size
+      background-color: $border-color
+
+    .cell
+      position: absolute
