@@ -15,34 +15,41 @@ body
   background-color: $body-color
   width: 100vw
   height: 100vh
-  position: relative
-  .scope
-    position: absolute
-    right: 20%
-    top: 20%
-    font-size: 40px
-    color: #bf6565
-
-  .field
-    width: 50vw
-    height: 50vw
-    background-color: $bg-color
-    border: 3px solid $border-color
-    border-radius: 5px
-    overflow: hidden
-    position: relative
-
-    .line-vertical
-      position: absolute
-      height: 100%
-      width: $border-size
-      background-color: $border-color
-
-    .line-horizontal
-      position: absolute
+  
+  .layout
+    width: 100%
+    height: 100%
+    .screen.main
       width: 100%
-      height: $border-size
-      background-color: $border-color
+      height: 100%
+      position: relative
+      .scope
+        position: absolute
+        right: 20%
+        top: 20%
+        font-size: 40px
+        color: #bf6565
 
-    .cell
-      position: absolute
+      .field
+        width: 50vw
+        height: 50vw
+        background-color: $bg-color
+        border: 3px solid $border-color
+        border-radius: 5px
+        overflow: hidden
+        position: relative
+
+        .line-vertical
+          position: absolute
+          height: 100%
+          width: $border-size
+          background-color: $border-color
+
+        .line-horizontal
+          position: absolute
+          width: 100%
+          height: $border-size
+          background-color: $border-color
+
+        .cell
+          position: absolute
