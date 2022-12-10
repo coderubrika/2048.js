@@ -1,8 +1,8 @@
 import { Subject } from "rxjs"
 
-export function RxProperty(initialValue) {
-  const propertySubject = new Subject()
-  let value = initialValue
+export function RxProperty<T>(initialValue: T) {
+  const propertySubject = new Subject<T>()
+  let value: T = initialValue
 
   Object.defineProperty(propertySubject, "value", {
 
@@ -10,7 +10,7 @@ export function RxProperty(initialValue) {
       return value;
     },
   
-    set: function(val) {
+    set: function(val: T) {
       value = val
       propertySubject.next(value)
     }
