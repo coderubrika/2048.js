@@ -1,20 +1,18 @@
 import { Subject } from "rxjs"
 
-export function RxProperty<T>(initialValue: T) {
-  const propertySubject = new Subject<T>()
-  let value: T = initialValue
-
-  Object.defineProperty(propertySubject, "value", {
-
-    get: function() {
-      return value;
-    },
+export default class RxProperty<T> extends Subject<T> {
+  public set Value(value: T) {
+    this.value = value
+    this.next(value)
+  }
   
-    set: function(val: T) {
-      value = val
-      propertySubject.next(value)
-    }
-  })
+  public get Value() {
+    return this.value
+  }
 
-  return propertySubject
+  private value: T
+  constructor(initialValue: T) {
+    super();
+    this.value = initialValue
+  }
 }
