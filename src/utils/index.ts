@@ -1,4 +1,4 @@
-export * as RxProperty from "./RxProperty"
+export { RxProperty } from "./RxProperty"
 
 export function query<TElement extends Element>(request: string, context: Node = document) {
   const answer = document.querySelector<TElement>(request)

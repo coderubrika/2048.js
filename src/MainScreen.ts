@@ -1,5 +1,5 @@
 import { fromEvent, Observable, Subject } from "rxjs"
-import { query } from "./utils"
+import { query, RxProperty } from "./utils"
 
 export class MainScreen {
   private readonly screen: HTMLElement
@@ -20,6 +20,8 @@ export class MainScreen {
   public readonly OnPlay: Observable<MouseEvent>
   public readonly OnReset: Observable<MouseEvent>
   public readonly OnEnableAI: Subject<boolean>
+  public readonly Scope: RxProperty<number>
+  public readonly Resolution: RxProperty<number>
 
   constructor(gameManager) {
     this.screen = query('.screen.main')
@@ -55,6 +57,22 @@ export class MainScreen {
         return
       this.isEnabledAI = false
       this.OnEnableAI.next(false)
+    })
+
+    this.Scope.subscribe(scope => {
+      this.scope.textContent = scope.toString()
+    })
+
+    fromEvent<KeyboardEvent>(this.resolutionInput, 'keyup').subscribe(event => {
+      const target = event.target as HTMLInputElement
+      const candidate = Number(target.value)
+      
+      if (Number.isNaN(candidate)) {
+        target.value = this.Resolution.Value.toString()
+      }
+      else {
+        this.Resolution.Value = candidate
+      }
     })
   }
 }
