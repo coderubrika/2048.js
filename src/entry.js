@@ -1,4 +1,5 @@
 import { GameManager } from './GameManager'
+import {RxProperty} from './utils/rxProperty'
 
 window.onload = start
 

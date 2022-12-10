@@ -15,6 +15,7 @@
     "parcel": "^2.8.0"
   },
   "dependencies": {
-    "math.js": "^1.1.46"
+    "math.js": "^1.1.46",
+    "rxjs": "^7.6.0"
   }
 }

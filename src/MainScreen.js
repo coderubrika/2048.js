@@ -1,5 +1,9 @@
+import { fromEvent, Subject } from "rxjs"
+
 export class MainScreen {
   constructor(gameManager) {
+    this.isEnabledAI = false
+
     this.screen = document.querySelector('.screen.main')
     
     this.playButton = this.screen.querySelector('button.play')
@@ -18,7 +22,21 @@ export class MainScreen {
 
     this.field = this.screen.querySelector('.field')
 
-    this.playButton.onclick.addEventListener(event => {
-    }, false)
+    this.onPlay = fromEvent(playButton, 'click')
+    this.onReset = fromEvent(resetButton, 'click')
+    this.onEnableAI = new Subject()
+
+    fromEvent(enableAIButton, 'click').subscribe(() => {
+      if (this.isEnabledAI)
+        return
+      this.isEnabledAI = true
+      this.onEnableAI.next(true)
+    })
+    fromEvent(disableAIButton, 'click').subscribe(() => {
+      if (!this.isEnabledAI)
+        return
+      this.isEnabledAI = false
+      this.onEnableAI.next(false)
+    })
   }
 }
