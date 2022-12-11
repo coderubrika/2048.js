@@ -30,8 +30,6 @@ export class UserInputService {
   }
 
   private handler(key: Key) {
-    console.log(key);
-    
     if (key == Key.KeyA) {
       this.OnMovement.next(UserMovement.Left)
       return
