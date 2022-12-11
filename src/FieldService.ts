@@ -2,7 +2,7 @@ import { Cell } from "./Cell"
 import { MainScreen } from "./MainScreen"
 import { RxProperty } from "./utils"
 
-export class Field {
+export class FieldService {
   private readonly scope: RxProperty<number>
   private readonly resolution: RxProperty<number>
   private readonly fieldTable: Array<Array<Cell|null>> = []
@@ -39,12 +39,12 @@ export class Field {
     for (let i = 0; i < this.resolution.Value; i++) {
       for (let j = 0; j < this.resolution.Value; j++) {
         if (this.fieldTable[i][j] == null) {
-          const newElem = this.emptyPool.pop() as Cell
-          this.fieldTable[i][j] = newElem
-          newElem.PosX = j
-          newElem.PosY = i
-          newElem.sync()
-          return newElem
+          const newcell = this.emptyPool.pop() as Cell
+          this.fieldTable[i][j] = newcell
+          newcell.PosX = j
+          newcell.PosY = i
+          newcell.sync()
+          return newcell
         }
       }
     }
@@ -59,23 +59,25 @@ export class Field {
         if (!this.CheckAvaibleCell(this.fieldTable[i][j])) {
           continue
         }
-        const elem = this.fieldTable[i][j] as Cell
+        const cell = this.fieldTable[i][j] as Cell
 
         for (let k = i - 1; k > -1; k--) {
-          const otherElem = this.fieldTable[k][j]
-          if (otherElem != null && !otherElem.IsMark) {
-            if (otherElem.Value == elem.Value) {
-              this.boost(elem, otherElem)
+          const otherCell = this.fieldTable[k][j]
+          if (otherCell != null && !otherCell.IsMark) {
+            if (otherCell.Value == cell.Value) {
+              this.boost(cell, otherCell)
               break
             }
           }
-          else if (otherElem == null) {
-            this.moveToNewPosition(elem as Cell, j, k)
+          else if (otherCell == null) {
+            this.moveToNewPosition(cell as Cell, j, k)
             continue
           }
         }
       }
     }
+
+    this.useEmptyCell()
   }
 
   public down() {
@@ -86,23 +88,25 @@ export class Field {
         if (!this.CheckAvaibleCell(this.fieldTable[i][j])) {
           continue
         }
-        const elem = this.fieldTable[i][j] as Cell
+        const cell = this.fieldTable[i][j] as Cell
 
         for (let k = i + 1; k < this.resolution.Value; k++) {
-          const otherElem = this.fieldTable[k][j]
-          if (otherElem != null && !otherElem.IsMark) {
-            if (otherElem.Value == elem.Value) {
-              this.boost(elem, otherElem)
+          const otherCell = this.fieldTable[k][j]
+          if (otherCell != null && !otherCell.IsMark) {
+            if (otherCell.Value == cell.Value) {
+              this.boost(cell, otherCell)
               break
             }
           }
-          else if (otherElem == null) {
-            this.moveToNewPosition(elem, j, k)
+          else if (otherCell == null) {
+            this.moveToNewPosition(cell, j, k)
             continue
           }
         }
       }
     }
+
+    this.useEmptyCell()
   }
 
   public left() {
@@ -113,23 +117,25 @@ export class Field {
         if (!this.CheckAvaibleCell(this.fieldTable[i][j])) {
           continue
         }
-        const elem = this.fieldTable[i][j] as Cell
+        const cell = this.fieldTable[i][j] as Cell
 
         for (let k = j - 1; k > -1; k--) {
-          const otherElem = this.fieldTable[i][k]
-          if (otherElem != null && !otherElem.IsMark) {
-            if (otherElem.Value == elem.Value) {
-              this.boost(elem, otherElem)
+          const otherCell = this.fieldTable[i][k]
+          if (otherCell != null && !otherCell.IsMark) {
+            if (otherCell.Value == cell.Value) {
+              this.boost(cell, otherCell)
               break
             }
           }
-          else if (otherElem == null) {
-            this.moveToNewPosition(elem, k, i)
+          else if (otherCell == null) {
+            this.moveToNewPosition(cell, k, i)
             continue
           }
         }
       }
     }
+
+    this.useEmptyCell()
   }
 
   public right() {
@@ -140,28 +146,30 @@ export class Field {
         if (!this.CheckAvaibleCell(this.fieldTable[i][j])) {
           continue
         }
-        const elem = this.fieldTable[i][j] as Cell
+        const cell = this.fieldTable[i][j] as Cell
 
         for (let k = j + 1; k < this.resolution.Value; k++) {
-          const otherElem = this.fieldTable[i][k]
-          if (otherElem != null && !otherElem.IsMark) {
-            if (otherElem.Value == elem.Value) {
-              this.boost(elem, otherElem)
+          const otherCell = this.fieldTable[i][k]
+          if (otherCell != null && !otherCell.IsMark) {
+            if (otherCell.Value == cell.Value) {
+              this.boost(cell, otherCell)
               break
             }
           }
-          else if (otherElem == null) {
-            this.moveToNewPosition(elem, k, i)
+          else if (otherCell == null) {
+            this.moveToNewPosition(cell, k, i)
             continue
           }
         }
       }
     }
+
+    this.useEmptyCell()
   }
 
-  public addToPool(elem: Cell) {
-    elem.reset()
-    this.emptyPool.push(elem)
+  public addToPool(cell: Cell) {
+    cell.reset()
+    this.emptyPool.push(cell)
   }
 
   private resetMark() {
@@ -174,25 +182,25 @@ export class Field {
     }
   }
 
-  private moveToNewPosition(elem: Cell, x: number, y: number) {
-    this.fieldTable[elem.PosY][elem.PosX] = null
-    elem.PosX = x
-    elem.PosY = y
-    this.fieldTable[elem.PosY][elem.PosX] = elem
-    elem.sync()
+  private moveToNewPosition(cell: Cell, x: number, y: number) {
+    this.fieldTable[cell.PosY][cell.PosX] = null
+    cell.PosX = x
+    cell.PosY = y
+    this.fieldTable[cell.PosY][cell.PosX] = cell
+    cell.sync()
   }
 
-  private boost(elem: Cell, otherElem: Cell) {
-    this.fieldTable[elem.PosY][elem.PosX] = null
-    this.fieldTable[otherElem.PosY][otherElem.PosX] = elem
-    elem.PosX = otherElem.PosX
-    elem.PosY = otherElem.PosY
-    elem.boostValue()
-    elem.IsMark = true
-    elem.sync()
-    this.scope.Value += elem.Value
+  private boost(cell: Cell, otherCell: Cell) {
+    this.fieldTable[cell.PosY][cell.PosX] = null
+    this.fieldTable[otherCell.PosY][otherCell.PosX] = cell
+    cell.PosX = otherCell.PosX
+    cell.PosY = otherCell.PosY
+    cell.boostValue()
+    cell.IsMark = true
+    cell.sync()
+    this.scope.Value += cell.Value
 
-    this.addToPool(otherElem)
+    this.addToPool(otherCell)
   }
 
   private CheckAvaibleCell(cell: Cell|null) {

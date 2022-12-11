@@ -14,7 +14,8 @@ export class MainScreen {
   private readonly saveButton: HTMLButtonElement
   private readonly loadButton: HTMLButtonElement
   private readonly field: HTMLElement
-  
+  private readonly lines: HTMLElement[] = []
+
   private isEnabledAI = false
 
   public readonly OnPlay: Observable<MouseEvent>
@@ -26,6 +27,7 @@ export class MainScreen {
   public readonly AIStepRate = new RxProperty<number>(500)
   public readonly OnSave = new Subject()
   public readonly OnLoad = new Subject()
+  public readonly CellsViews: HTMLElement[] = []
 
   public get FieldView() {
     return this.field
@@ -85,7 +87,7 @@ export class MainScreen {
       if (Number.isNaN(candidate) || !Number.isInteger(candidate) || candidate < 3) {
         target.value = this.Resolution.Value.toString()
       }
-      else {
+      else if (this.Resolution.Value != candidate){
         this.Resolution.Value = candidate
       }
     })
@@ -114,4 +116,48 @@ export class MainScreen {
       }
     })
   }
+
+  public redraw() {
+    this.initLines()
+    this.initCellsViews()
+  }
+
+  private initCellsViews() {
+    this.CellsViews.forEach(view => view.remove())
+    this.CellsViews.length = 0
+
+    for(let i = 0; i < this.Resolution.Value * this.Resolution.Value; i++) {
+      const cell = document.createElement('div')
+        cell.classList.add('cell')
+        cell.style.width = `${100 / this.Resolution.Value}%`
+        cell.style.height = cell.style.width
+  
+        cell.style.top = '0'
+        cell.style.left = '0'
+  
+        this.field.appendChild(cell)
+        this.CellsViews.push(cell)
+    }
+  }
+
+  private initLines() {
+    this.lines.forEach(view => view.remove())
+    this.lines.length = 0
+
+    for(let i = 1; i < this.Resolution.Value; i++) {
+      const lineH = document.createElement('div')
+      lineH.classList.add('line-vertical')
+      lineH.style.left = `${i/this.Resolution.Value*100}%`
+  
+      const lineW = document.createElement('div')
+      lineW.classList.add('line-horizontal')
+      lineW.style.top = `${i/this.Resolution.Value*100}%`
+  
+      this.field.appendChild(lineH)
+      this.field.appendChild(lineW)
+
+      this.lines.push(lineH, lineW)
+    }
+  }
+
 }

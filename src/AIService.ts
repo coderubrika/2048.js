@@ -1,15 +1,15 @@
-import { Field } from "./Field"
+import { FieldService } from "./FieldService"
 import { MainScreen } from "./MainScreen"
 import { RxProperty } from "./utils"
 
-export class AI {
-  private readonly field: Field
+export class AIService {
+  private readonly field: FieldService
   private readonly aiIds: number[] = []
   private readonly scope: RxProperty<number>
   
   private move: number = 0
 
-  constructor(field, mainScreen: MainScreen) {
+  constructor(field: FieldService, mainScreen: MainScreen) {
     this.field = field
     this.scope = mainScreen.Scope
   }
