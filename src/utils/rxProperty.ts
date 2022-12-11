@@ -1,6 +1,8 @@
 import { Subject } from "rxjs"
 
 export class RxProperty<T> extends Subject<T> {
+  private value: T
+
   public set Value(value: T) {
     this.value = value
     this.next(value)
@@ -9,8 +11,6 @@ export class RxProperty<T> extends Subject<T> {
   public get Value() {
     return this.value
   }
-
-  private value: T
 
   constructor(initialValue: T) {
     super();

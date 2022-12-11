@@ -16,8 +16,8 @@
       <div class="ui-panel">
 
         <div class="ui-group">
-          <button class="play"></button>
-          <button class="reset"></button>
+          <button class="play">Играть</button>
+          <button class="reset">Сбросить</button>
           <label class="element-group">
             <span class="">Разрешение</span>
             <input type="text" class="resolution">
@@ -31,6 +31,11 @@
         </div>
 
         <div class="ui-group">
+          <button class="save">Сохранить</button>
+          <button class="load">Загрузить</button>
+        </div>
+
+        <div class="ui-group">
          
           <label class="element-group">
             <span class="">Мощность AI</span>
@@ -38,7 +43,7 @@
           </label>
           <label class="element-group">
             <span class="">Задержка</span>
-            <input type="text" class="ai-power">
+            <input type="text" class="ai-step-rate">
           </label>
         </div>
       </div>
@@ -47,7 +52,7 @@
 
 
   </div>
-  <script type="module" src="src/entry.js"></script>
+  <script type="module" src="src/entry.ts"></script>
 </body>
 
 </html>

@@ -1,14 +1,16 @@
 import { GameManager } from './GameManager'
-import {RxProperty} from './utils/RxProperty'
+import { MainScreen } from './MainScreen'
 
 window.onload = start
 
 const resolution = 8
 
 function start() {
-  const manager = new GameManager(resolution)
+  const mainScreen = new MainScreen()
+  const manager = new GameManager(mainScreen)
   manager.initFieldView()
   manager.initCells()
+  //manager.start()
   manager.subscribeInputHandler()
   manager.startAI(1, 500)
 }

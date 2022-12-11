@@ -1,10 +1,24 @@
+import { MainScreen } from "./MainScreen"
+import { RxProperty } from "./utils"
+
 export class Cell {
-  constructor(elem) {
-    this.elem = elem
-    this.posX = -2
-    this.posY = -2
-    this.value = 2
-    this.isMark = false
+  private readonly view: HTMLElement
+  private readonly resolution: RxProperty<number>
+  
+  private value = 2
+
+  public get Value() {
+    return this.value
+  }
+
+  public PosX = -2
+  public PosY = -2
+  public IsMark = false
+  
+  constructor(mainScreen: MainScreen, view: HTMLElement) {
+    this.view = view
+    this.resolution = mainScreen.Resolution
+
     this.sync()
   }
 
@@ -13,17 +27,17 @@ export class Cell {
   }
 
   reset() {
-    this.posX = -2
-    this.posY = -2
+    this.PosX = -2
+    this.PosY = -2
     this.value = 2
-    this.isMark = false
+    this.IsMark = false
     this.sync()
   }
 
-  sync(resolution) {
-    this.elem.style.left = `${this.posX/resolution * 100}%`
-    this.elem.style.top = `${this.posY/resolution * 100}%`
-    this.elem.style.backgroundColor = this.getColor(this.value)
+  sync() {
+    this.view.style.left = `${this.PosX/this.resolution.Value * 100}%`
+    this.view.style.top = `${this.PosY/this.resolution.Value * 100}%`
+    this.view.style.backgroundColor = this.getColor(this.value)
   }
 
   getColor(value) {

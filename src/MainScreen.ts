@@ -11,8 +11,8 @@ export class MainScreen {
   private readonly disableAIButton: HTMLButtonElement
   private readonly aiPowerInput: HTMLInputElement
   private readonly aiStepRateInput: HTMLInputElement
-  private readonly saveProgressButton: HTMLButtonElement
-  private readonly loadProgressButton: HTMLButtonElement
+  private readonly saveButton: HTMLButtonElement
+  private readonly loadButton: HTMLButtonElement
   private readonly field: HTMLElement
   
   private isEnabledAI = false
@@ -27,7 +27,11 @@ export class MainScreen {
   public readonly OnSave = new Subject()
   public readonly OnLoad = new Subject()
 
-  constructor(gameManager) {
+  public get FieldView() {
+    return this.field
+  }
+
+  constructor() {
     this.screen = query('.screen.main')
     this.playButton = query('button.play', this.screen)
     this.resetButton = query('button.reset', this.screen)
@@ -38,10 +42,10 @@ export class MainScreen {
     this.enableAIButton = query('button.enable-ai', this.screen)
     this.disableAIButton = query('button.disable-ai', this.screen)
     this.aiPowerInput = query('input.ai-power', this.screen)
-    this.aiStepRateInput = query('input.ai-speed', this.screen)
+    this.aiStepRateInput = query('input.ai-step-rate', this.screen)
 
-    this.saveProgressButton = query('button.save-progress', this.screen)
-    this.loadProgressButton = query('button.load-progress', this.screen)
+    this.saveButton = query('button.save', this.screen)
+    this.loadButton = query('button.load', this.screen)
 
     this.field = query('.field', this.screen)
 
@@ -62,11 +66,11 @@ export class MainScreen {
       this.OnEnableAI.next(false)
     })
 
-    fromEvent(this.saveProgressButton, 'click').subscribe(() => {
+    fromEvent(this.saveButton, 'click').subscribe(() => {
       this.OnSave.next(undefined)
     })
 
-    fromEvent(this.loadProgressButton, 'click').subscribe(() => {
+    fromEvent(this.loadButton, 'click').subscribe(() => {
       this.OnLoad.next(undefined)
     })
 

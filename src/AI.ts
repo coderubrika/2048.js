@@ -1,9 +1,17 @@
+import { Field } from "./Field"
+import { MainScreen } from "./MainScreen"
+import { RxProperty } from "./utils"
+
 export class AI {
-  constructor(fieldModel, scope) {
-    this.fieldModel = fieldModel
-    this.aiIds = []
-    this.move = 0
-    this.scope = scope
+  private readonly field: Field
+  private readonly aiIds: number[] = []
+  private readonly scope: RxProperty<number>
+  
+  private move: number = 0
+
+  constructor(field, mainScreen: MainScreen) {
+    this.field = field
+    this.scope = mainScreen.Scope
   }
 
   startAI(power, stepTime) {
@@ -14,49 +22,45 @@ export class AI {
 
   stopAI() {
     this.aiIds.forEach(id => clearInterval(id))
-    this.aiIds = []
+    this.aiIds.length = 0
   }
 
   ai(stepTime) {
     const id = setInterval(()=> {
       if (this.move == 0) {
-        this.fieldModel.down()
+        this.field.down()
         this.move = 1
-        const answer = this.fieldModel.useEmptyCell()
+        const answer = this.field.useEmptyCell()
         if (answer == null) {
           console.log('Game Over');
         }
-        this.scope.textContent = this.fieldModel.scope
         return
       }
       if (this.move == 1) {
-        this.fieldModel.right()
+        this.field.right()
         this.move = 2
-        const answer = this.fieldModel.useEmptyCell()
+        const answer = this.field.useEmptyCell()
         if (answer == null) {
           console.log('Game Over');
         }
-        this.scope.textContent = this.fieldModel.scope
         return
       }
       if (this.move == 2) {
-        this.fieldModel.up()
+        this.field.up()
         this.move = 3
-        const answer = this.fieldModel.useEmptyCell()
+        const answer = this.field.useEmptyCell()
         if (answer == null) {
           console.log('Game Over');
         }
-        this.scope.textContent = this.fieldModel.scope
         return
       }
       if (this.move == 3) {
-        this.fieldModel.left()
+        this.field.left()
         this.move = 0
-        const answer = this.fieldModel.useEmptyCell()
+        const answer = this.field.useEmptyCell()
         if (answer == null) {
           console.log('Game Over');
         }
-        this.scope.textContent = this.fieldModel.scope
         return
       }
   
